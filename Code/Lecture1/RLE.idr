@@ -1,6 +1,7 @@
 module RLE
 
 import Decidable.Equality
+import Data.List
 
 rep : Nat -> a -> List a
 rep 0 x = []
@@ -28,3 +29,7 @@ data Singleton : a -> Type where
      Val : (x : a) -> Singleton x
 
 uncompress : RunLength {ty} xs -> Singleton xs
+uncompress Empty = Val []
+uncompress (Run n x y) =
+  case uncompress y of
+    (Val more) => Val $ rep n x ++ more
